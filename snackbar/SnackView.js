@@ -13,12 +13,12 @@ import {isIphoneX,iosStatusBarXHeight,iosBottomXHeight,defaultStatusBarHeight, s
 
 class SnackView extends Component{
 
-    var eventListner = "";
-
     constructor(props) {
         super(props)
 
-        const {width,height} = Dimensions.get('window')
+        const {width,height} = Dimensions.get('window');
+        this.dimensionsSubscription = null;
+
         this.state = {
             deviceWidth: width,
             deviceHeight: height,
@@ -27,7 +27,7 @@ class SnackView extends Component{
         }
 
         // React after 17
-        eventListner = Dimensions.addEventListener('change', this.onWindowChange);
+        this.dimensionsSubscription = Dimensions.addEventListener('change', this.onWindowChange);
 
         this._panResponder = PanResponder.create({
             onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
@@ -229,7 +229,7 @@ class SnackView extends Component{
             this.hideAnimated.stop()
             this.hideAnimated = undefined
         }
-        eventListner.remove();
+        this.dimensionsSubscription.remove();
     }
 
     getStatusBarHeight = () => {

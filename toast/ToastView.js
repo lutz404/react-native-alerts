@@ -12,12 +12,12 @@ import { shadowBlackStyleBottom } from '../util/UiUtil'
 const MaxWidthRatio = 0.8
 export default class ToastView extends Component{
 
-    var eventListner = "";
-
     constructor(props) {
         super(props)
 
         const {width,height} = Dimensions.get('window')
+        
+        this.dimensionsSubscription = null;
 
         this.state = {
             deviceWidth: width,
@@ -27,7 +27,7 @@ export default class ToastView extends Component{
         }
 
         // React after 17
-        eventListner = Dimensions.addEventListener('change', this.onWindowChange);
+        this.dimensionsSubscription = Dimensions.addEventListener('change', this.onWindowChange);
     }
 
     componentDidMount() {
@@ -39,7 +39,7 @@ export default class ToastView extends Component{
             this.liftCycleAnimated.stop()
             this.liftCycleAnimated = undefined
         }
-        eventListner.remove();
+        this.dimensionsSubscription.remove();
     }
 
     render() {
